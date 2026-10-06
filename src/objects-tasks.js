@@ -35,9 +35,10 @@ function shallowCopy(obj) {
  */
 function mergeObjects(objects) {
   return objects.reduce((acc, obj) => {
-    Object.keys(obj).forEach((key) => {
-      acc[key] = (acc[key] || 0) + obj[key];
+    Object.entries(obj).forEach(([key, value]) => {
+      acc[key] = (acc[key] || 0) + value;
     });
+
     return acc;
   }, {});
 }
@@ -56,13 +57,9 @@ function mergeObjects(objects) {
  *
  */
 function removeProperties(obj, keys) {
-  const newObj = {};
-  Object.keys(obj).forEach((key) => {
-    if (!keys.includes(key)) {
-      newObj[key] = obj[key];
-    }
-  });
-  return newObj;
+  return Object.fromEntries(
+    Object.entries(obj).filter(([key]) => !keys.includes(key))
+  );
 }
 
 /**
@@ -193,7 +190,7 @@ function sellTickets(queue) {
 function Rectangle(width, height) {
   this.width = width;
   this.height = height;
-  this.getArea = function () {
+  this.getArea = function getArea() {
     return this.width * this.height;
   };
 }
@@ -261,7 +258,7 @@ function fromJSON(proto, json) {
  *    ]
  */
 function sortCitiesArray(arr) {
-  arr.sort(function (a, b) {
+  arr.sort(function Sort(a, b) {
     if (a.country > b.country) {
       return 1;
     }
